@@ -16,14 +16,16 @@ import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import ecommerceLogo from "../../assets/ecommerce-logo.png";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const pages = ["Home", "About", "Contact"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const authOptions = ["Log-in", "Sign-up"];
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElAuth, setAnchorElAuth] = useState(null);
   const navigate = useNavigate();
 
   const {
@@ -39,6 +41,9 @@ const Header = () => {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
+  const handleOpenAuthMenu = (event) => {
+    setAnchorElAuth(event.currentTarget);
+  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -46,6 +51,10 @@ const Header = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleCloseAuthMenu = () => {
+    setAnchorElAuth(null);
   };
 
   const onSubmitDesk = (data) => {
@@ -56,11 +65,15 @@ const Header = () => {
     navigate(`/product-by-search/${data.searchProductMobile}`);
   };
 
+  // const optionIsActive = (isActive, isPending) => {
+  //   return isActive ? "active" : "";
+  // };
+
   return (
     <div>
       <AppBar position="fixed">
         <Container maxWidth="xl">
-          <Toolbar disableGutters>
+          <Toolbar disableGutters sx={{ py: { xs: "0.5rem", md: 0 } }}>
             {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
             <Typography
               variant="h6"
@@ -79,6 +92,7 @@ const Header = () => {
             >
               LOGO
             </Typography> */}
+            {/* Logo for desktop */}
             <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
               <Link to="/">
                 <img
@@ -153,15 +167,21 @@ const Header = () => {
                     key={page}
                     to={page !== "Home" ? `/${page.toLowerCase()}` : ""}
                     style={{ textDecoration: "none" }}
+                    onClick={handleCloseNavMenu}
                   >
-                    <MenuItem onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">{page}</Typography>
-                    </MenuItem>
+                    {({ isActive }) => (
+                      <MenuItem>
+                        <Button>
+                          <div className={isActive ? "active" : ""}>{page}</div>
+                        </Button>
+                      </MenuItem>
+                    )}
                   </NavLink>
                 ))}
               </Menu>
             </Box>
-            <Box
+            {/* Logo for mobile */}
+            {/* <Box
               sx={{
                 display: { xs: "flex", md: "none", bgcolor: "red" },
                 mr: 1,
@@ -175,7 +195,7 @@ const Header = () => {
                   style={{ height: "4rem" }}
                 />
               </Link>
-            </Box>
+            </Box> */}
             {/* Input field for mobile */}
             <Box
               sx={{
@@ -185,7 +205,9 @@ const Header = () => {
                   bgcolor: "purple",
                 },
                 justifyContent: "center",
+                // width: "15rem",
                 flexGrow: 1,
+                px: "1.5rem",
               }}
             >
               <form onSubmit={handleSubmit(onSubmitMobile)}>
@@ -193,14 +215,14 @@ const Header = () => {
                   <TextField
                     sx={{
                       bgcolor: "white",
-                      width: "80%",
+                      // width: "80%",
                       // mr: 2,
                     }}
                     label="Search product"
                     variant="outlined"
                     {...register("searchProductMobile")}
                   />
-                  <Button variant="contained" type="submit">
+                  <Button variant="contained" type="submit" size="small">
                     Search
                   </Button>
                 </Box>
@@ -232,7 +254,6 @@ const Header = () => {
                 display: { xs: "none", md: "flex" },
                 justifyContent: "end",
                 pr: 4,
-                // bgcolor: "purple",
               }}
             >
               {pages.map((page) => (
@@ -240,19 +261,18 @@ const Header = () => {
                   key={page}
                   to={page !== "Home" ? `/${page.toLowerCase()}` : ""}
                   style={{ textDecoration: "none" }}
+                  onClick={handleCloseNavMenu}
                 >
-                  <Button
-                    key={page}
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: "white", display: "block" }}
-                  >
-                    {page}
-                  </Button>
+                  {({ isActive }) => (
+                    <Button sx={{ my: 2, color: "white" }}>
+                      <div className={isActive ? "active" : ""}>{page}</div>
+                    </Button>
+                  )}
                 </NavLink>
               ))}
             </Box>
-
-            <Box sx={{ flexGrow: 0 }}>
+            {/* Box for user settings */}
+            {/* <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -278,6 +298,68 @@ const Header = () => {
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
+                ))}
+              </Menu>
+            </Box> */}
+            {/* Button for log-in / sign-up */}
+            {/* <Button
+              sx={{
+                width: { xs: "3rem", md: "6rem" },
+                bgcolor: "white",
+                color: "black",
+                fontSize: { xs: "0.7rem", md: "0.8rem" },
+                ":hover": { bgcolor: "red" },
+              }}
+            >
+              Sign-up / Log-in
+            </Button> */}
+
+            <Box>
+              <Button
+                size="small"
+                onClick={handleOpenAuthMenu}
+                sx={{
+                  width: { xs: "1rem", md: "6rem" },
+                  bgcolor: "white",
+                  ":hover": { bgcolor: "white" },
+                  fontSize: { xs: "0.6rem", md: "0.8rem" },
+                  color: "primary",
+                }}
+                variant="outlined"
+              >
+                Sign-up / Log-in
+              </Button>
+              <Menu
+                anchorEl={anchorElAuth}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElAuth)}
+                onClose={handleCloseAuthMenu}
+              >
+                {authOptions.map((option) => (
+                  <NavLink
+                    key={option}
+                    to={option === "Log-in" ? `/login` : "signup"}
+                    style={{ textDecoration: "none" }}
+                    onClick={handleCloseAuthMenu}
+                  >
+                    {({ isActive }) => (
+                      <MenuItem>
+                        <Button>
+                          <div className={isActive ? "active" : ""}>
+                            {option}
+                          </div>
+                        </Button>
+                      </MenuItem>
+                    )}
+                  </NavLink>
                 ))}
               </Menu>
             </Box>

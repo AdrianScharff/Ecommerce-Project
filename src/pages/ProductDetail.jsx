@@ -60,7 +60,31 @@ const ProductDetail = () => {
         >
           {item.description}
         </Typography>
-        <Button>Buy now</Button>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "0.3rem",
+          }}
+        >
+          <Button disabled size="large" variant="contained">
+            Buy now
+          </Button>
+          <Box
+            sx={{
+              color: "red",
+              width: "60%",
+              display: "flex",
+              gap: "0.3rem",
+            }}
+          >
+            <Typography sx={{ fontSize: "0.8rem" }}>*</Typography>
+            <Typography sx={{ fontSize: "0.8rem" }}>
+              Please sign up or log in to buy a product
+            </Typography>
+          </Box>
+        </Box>
         <Typography
           sx={{ fontWeight: "bold", fontSize: "2rem", color: "blue" }}
         >
