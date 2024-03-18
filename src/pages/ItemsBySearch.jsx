@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchSearchedItems } from "../services/fetchServices";
+import { fetchSearchedItems } from "../services/itemsServices";
 import { Container, Paper, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import ImageComponent from "../components/ImageComponent/ImageComponent";

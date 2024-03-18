@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllItems } from "@/services/fetchServices";
+import { fetchAllItems } from "@/services/itemsServices";
 import { Container, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { Directions } from "@mui/icons-material";
@@ -15,7 +15,6 @@ const Home = () => {
     try {
       const allItems = await fetchAllItems();
       setItems(allItems);
-      console.log(allItems);
     } catch (error) {
       console.error(error);
     }
@@ -25,14 +24,10 @@ const Home = () => {
     getAllItems();
   }, []);
 
-  // const handleOnError = (e) => {
-  //   e.target.src = imageNA;
-  // };
-
   return (
     <Container
       sx={{
-        bgcolor: "red",
+        // bgcolor: "red",
         display: "grid",
         gridTemplateColumns: { sm: "1fr", md: "repeat(4, 1fr)" },
         gap: "1rem",

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Button, Box, Typography } from "@mui/material";
 import ImageComponent from "@/components/ImageComponent/ImageComponent";
 import { useParams } from "react-router-dom";
-import { fetchSelectedItem } from "../services/fetchServices";
+import { fetchSelectedItem } from "../services/itemsServices";
 import imageNA from "@/assets/imageNA.png";
+import useAuthContext from "../hooks/useAuthContext";
 
 const ProductDetail = () => {
   const [item, setItem] = useState({});
   const { id } = useParams();
+  const { isAuth } = useAuthContext();
 
   const getItem = async (id) => {
     try {
@@ -39,7 +41,6 @@ const ProductDetail = () => {
           flexDirection: "column",
           alignItems: "center",
           gap: "2rem",
-          // bgcolor: "green",
         }}
       >
         <ImageComponent
@@ -54,7 +55,6 @@ const ProductDetail = () => {
         <Typography
           sx={{
             width: { md: "60%", xl: "40%" },
-            // bgcolor: "yellow",
             fontSize: "1.5rem",
           }}
         >
@@ -68,22 +68,29 @@ const ProductDetail = () => {
             gap: "0.3rem",
           }}
         >
-          <Button disabled size="large" variant="contained">
+          <Button
+            disabled={isAuth ? false : true}
+            size="large"
+            variant="contained"
+          >
             Buy now
           </Button>
-          <Box
-            sx={{
-              color: "red",
-              width: "60%",
-              display: "flex",
-              gap: "0.3rem",
-            }}
-          >
-            <Typography sx={{ fontSize: "0.8rem" }}>*</Typography>
-            <Typography sx={{ fontSize: "0.8rem" }}>
-              Please sign up or log in to buy a product
-            </Typography>
-          </Box>
+          {!isAuth && (
+            <Box
+              sx={{
+                color: "red",
+                width: "60%",
+                display: "flex",
+                gap: "0.3rem",
+              }}
+            >
+              <Typography sx={{ fontSize: "0.8rem" }}>*</Typography>
+
+              <Typography sx={{ fontSize: "0.8rem" }}>
+                Sign up or log in to buy this product
+              </Typography>
+            </Box>
+          )}
         </Box>
         <Typography
           sx={{ fontWeight: "bold", fontSize: "2rem", color: "blue" }}

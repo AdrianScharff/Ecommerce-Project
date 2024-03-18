@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   TextField,
   Box,
@@ -12,11 +12,14 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { registerUser, loginUser } from "@/services/userServices";
+import useAuthContext from "@/hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup
   .object({
-    firstName: yup.string().required("Please write your first name"),
-    lastName: yup.string().required("Please write your last name"),
+    first_name: yup.string().required("Please write your first name"),
+    last_name: yup.string().required("Please write your last name"),
     gender: yup
       .mixed()
       .oneOf(["M", "F", "O"], "Please select a gender")
@@ -33,10 +36,7 @@ const schema = yup
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%.^&*])/,
         "Password must contain at least 8 characters, one number, one uppercase letter, one lowercase letter amd one special character"
       ),
-    role: yup
-      .mixed()
-      .oneOf(["admin", "customer"], "Please select a role")
-      .defined(),
+    role: yup.mixed().oneOf(["ADMIN", "CUSTOMER"]).defined(),
   })
   .required();
 
@@ -49,8 +49,33 @@ const Signup = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const { loginFunction, isAuth } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/");
+    }
+  }, [isAuth]);
+
+  const onSubmit = async (data) => {
+    try {
+      const { status } = await registerUser(data);
+      if (status === 201) {
+        console.log("User created successfully");
+        const dataForLogin = {
+          email: data.email,
+          password: data.password,
+        };
+        const responseToken = await loginUser(dataForLogin);
+        if (responseToken.status === 200) {
+          await loginFunction(responseToken.data.token);
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -69,7 +94,7 @@ const Signup = () => {
         sx={{
           mt: { xs: "4rem", md: "5rem" },
           mb: { xs: "4rem", md: "5rem" },
-          width: { xs: "90%", md: "50%" },
+          width: { xs: "90%", md: "50%", lg: "40%", xl: "30%" },
         }}
       >
         <Typography variant="h4" sx={{ mb: "2rem" }}>
@@ -93,7 +118,7 @@ const Signup = () => {
               label="First name"
               type="text"
               variant="outlined"
-              {...register("firstName")}
+              {...register("first_name")}
             />
             <Typography sx={{ color: "red" }}>
               {errors.firstName?.message}
@@ -106,7 +131,7 @@ const Signup = () => {
               label="Last name"
               type="text"
               variant="outlined"
-              {...register("lastName")}
+              {...register("last_name")}
             />
             <Typography sx={{ color: "red" }}>
               {errors.lastName?.message}
@@ -167,8 +192,8 @@ const Signup = () => {
                 defaultValue=""
                 {...register("role")}
               >
-                <MenuItem value={"customer"}>CUSTOMER</MenuItem>
-                <MenuItem value={"admin"}>ADMIN</MenuItem>
+                <MenuItem value={"CUSTOMER"}>CUSTOMER</MenuItem>
+                <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
               </Select>
             </FormControl>
             <Typography sx={{ color: "red" }}>

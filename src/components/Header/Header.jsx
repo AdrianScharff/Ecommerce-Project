@@ -6,7 +6,7 @@ import {
   Typography,
   Menu,
   Container,
-  Avatar,
+  // Avatar,
   Button,
   Tooltip,
   MenuItem,
@@ -17,9 +17,10 @@ import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import ecommerceLogo from "../../assets/ecommerce-logo.png";
 import { useForm } from "react-hook-form";
+import useAuthContext from "@/hooks/useAuthContext";
 
 const pages = ["Home", "About", "Contact"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+// const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const authOptions = ["Log-in", "Sign-up"];
 
 const Header = () => {
@@ -65,9 +66,7 @@ const Header = () => {
     navigate(`/product-by-search/${data.searchProductMobile}`);
   };
 
-  // const optionIsActive = (isActive, isPending) => {
-  //   return isActive ? "active" : "";
-  // };
+  const { isAuth, logoutFunction, userData } = useAuthContext();
 
   return (
     <div>
@@ -125,7 +124,14 @@ const Header = () => {
                     variant="outlined"
                     {...register("searchProductDesk")}
                   />
-                  <Button variant="contained" type="submit">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      bgcolor: "#48a1ca",
+                      ":hover": { bgcolor: "#065299" },
+                    }}
+                    type="submit"
+                  >
                     Search
                   </Button>
                 </Box>
@@ -172,7 +178,9 @@ const Header = () => {
                     {({ isActive }) => (
                       <MenuItem>
                         <Button>
-                          <div className={isActive ? "active" : ""}>{page}</div>
+                          <div className={isActive ? "active-contrast" : ""}>
+                            {page}
+                          </div>
                         </Button>
                       </MenuItem>
                     )}
@@ -272,97 +280,132 @@ const Header = () => {
               ))}
             </Box>
             {/* Box for user settings */}
-            {/* <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box> */}
-            {/* Button for log-in / sign-up */}
-            {/* <Button
-              sx={{
-                width: { xs: "3rem", md: "6rem" },
-                bgcolor: "white",
-                color: "black",
-                fontSize: { xs: "0.7rem", md: "0.8rem" },
-                ":hover": { bgcolor: "red" },
-              }}
-            >
-              Sign-up / Log-in
-            </Button> */}
-
-            <Box>
-              <Button
-                size="small"
-                onClick={handleOpenAuthMenu}
-                sx={{
-                  width: { xs: "1rem", md: "6rem" },
-                  bgcolor: "white",
-                  ":hover": { bgcolor: "white" },
-                  fontSize: { xs: "0.6rem", md: "0.8rem" },
-                  color: "primary",
-                }}
-                variant="outlined"
-              >
-                Sign-up / Log-in
-              </Button>
-              <Menu
-                anchorEl={anchorElAuth}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElAuth)}
-                onClose={handleCloseAuthMenu}
-              >
-                {authOptions.map((option) => (
-                  <NavLink
-                    key={option}
-                    to={option === "Log-in" ? `/login` : "signup"}
-                    style={{ textDecoration: "none" }}
-                    onClick={handleCloseAuthMenu}
+            {isAuth ? (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Typography
+                      sx={{
+                        bgcolor: "transparent",
+                        color: "#c7f6ff",
+                        fontWeight: "bold",
+                        py: "3px",
+                        px: "10px",
+                        border: "2px solid #c7f6ff",
+                        borderRadius: "50px",
+                      }}
+                    >
+                      {userData?.first_name || "no user"}
+                    </Typography>
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {userData?.role === "ADMIN" && (
+                    <Typography
+                      sx={{
+                        fontSize: "13px",
+                        color: "#065299",
+                        letterSpacing: "2px",
+                        mb: "15px",
+                        pl: "18px",
+                      }}
+                    >
+                      ADMIN
+                    </Typography>
+                  )}
+                  <MenuItem
+                    onClick={() => {
+                      handleCloseUserMenu();
+                    }}
                   >
-                    {({ isActive }) => (
-                      <MenuItem>
-                        <Button>
-                          <div className={isActive ? "active" : ""}>
-                            {option}
-                          </div>
-                        </Button>
-                      </MenuItem>
-                    )}
-                  </NavLink>
-                ))}
-              </Menu>
-            </Box>
+                    <Typography textAlign="center">Profile</Typography>
+                  </MenuItem>
+                  {userData?.role === "ADMIN" && (
+                    <MenuItem
+                      onClick={() => {
+                        handleCloseUserMenu();
+                      }}
+                    >
+                      <Typography textAlign="center">Add a product</Typography>
+                    </MenuItem>
+                  )}
+                  <MenuItem
+                    onClick={() => {
+                      handleCloseUserMenu();
+                      logoutFunction();
+                      navigate("/login");
+                    }}
+                  >
+                    <Typography textAlign="center">Logout</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            ) : (
+              <Box>
+                <Button
+                  size="small"
+                  onClick={handleOpenAuthMenu}
+                  sx={{
+                    width: { xs: "1rem", md: "6rem" },
+                    bgcolor: "white",
+                    ":hover": { bgcolor: "white" },
+                    fontSize: { xs: "0.6rem", md: "0.8rem" },
+                    color: "primary",
+                  }}
+                  variant="outlined"
+                >
+                  Sign-up / Log-in
+                </Button>
+                <Menu
+                  anchorEl={anchorElAuth}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  open={Boolean(anchorElAuth)}
+                  onClose={handleCloseAuthMenu}
+                >
+                  {authOptions.map((option) => (
+                    <NavLink
+                      key={option}
+                      to={option === "Log-in" ? `/login` : "/signup"}
+                      style={{ textDecoration: "none" }}
+                      onClick={handleCloseAuthMenu}
+                    >
+                      {({ isActive }) => (
+                        <MenuItem>
+                          <Button>
+                            <div className={isActive ? "active-contrast" : ""}>
+                              {option}
+                            </div>
+                          </Button>
+                        </MenuItem>
+                      )}
+                    </NavLink>
+                  ))}
+                </Menu>
+              </Box>
+            )}
           </Toolbar>
         </Container>
       </AppBar>

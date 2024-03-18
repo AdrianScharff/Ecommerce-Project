@@ -5,6 +5,18 @@
 }
 
 .active {
-  color: black;
-  /* background-color: black; */
+  /* color: #c7f6ff; */
+  color: #c7f6ff;
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+}
+
+.active-contrast {
+  color: #46dcb3;
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+}
+
+.test {
+  color: #1cccef;
 }
