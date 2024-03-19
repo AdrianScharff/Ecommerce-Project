@@ -39,4 +39,16 @@ const fetchSearchedItems = async (text) => {
     }
 }
 
-export { fetchAllItems, fetchSelectedItem, fetchSearchedItems }
+const addNewItem = async (data, token) => {
+    try {
+        return await axios.post(`${BASE_URL}items`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    } catch (error) {
+        throw error
+    }
+}
+
+export { fetchAllItems, fetchSelectedItem, fetchSearchedItems, addNewItem }

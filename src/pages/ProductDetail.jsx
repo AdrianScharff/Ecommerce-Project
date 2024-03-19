@@ -56,6 +56,7 @@ const ProductDetail = () => {
           sx={{
             width: { md: "60%", xl: "40%" },
             fontSize: "1.5rem",
+            ...(item.description?.length < 38 && { textAlign: "center" }),
           }}
         >
           {item.description}

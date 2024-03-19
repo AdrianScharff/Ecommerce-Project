@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { loginUser } from "@/services/userServices";
 import useAuthContext from "@/hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
-import { getUserData } from "../services/userServices";
+// import { getUserData } from "../services/userServices";
 
 const schema = yup
   .object({

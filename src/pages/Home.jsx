@@ -7,9 +7,16 @@ import imageNA from "../assets/imageNA.png";
 import loadingImg from "@/assets/loadingImg.png";
 import ImageComponent from "@/components/ImageComponent/ImageComponent";
 import { Link } from "react-router-dom";
+// test
+import useAuthContext from "../hooks/useAuthContext";
+// ----
 
 const Home = () => {
   const [items, setItems] = useState([]);
+
+  // test
+  const { userData } = useAuthContext();
+  // ---
 
   const getAllItems = async () => {
     try {
@@ -34,6 +41,11 @@ const Home = () => {
         mt: { xs: "4.2rem", md: "5.3rem" },
         py: "1.5rem",
       }}
+      // test
+      onClick={() => {
+        console.log(userData);
+      }}
+      // -----
     >
       {items.map((item) => (
         <Link

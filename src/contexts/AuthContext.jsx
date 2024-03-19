@@ -17,6 +17,7 @@ const AuthProvider = ({ children }) => {
       // console.log(response.data);
       setUserData(response.data);
       const payload = jwtDecode(token);
+      // console.log(payload);
       setUserPayload(payload);
     } catch (error) {
       throw error;

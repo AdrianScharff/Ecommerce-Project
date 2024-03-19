@@ -12,35 +12,52 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { registerUser, loginUser } from "@/services/userServices";
 import useAuthContext from "@/hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
+import { addNewItem } from "../services/itemsServices";
+
+const categories = [
+  "Kids",
+  "Shoes",
+  "Computers",
+  "Grocery",
+  "Automotive",
+  "Toys",
+  "Tools",
+  "Health",
+  "Sports",
+  "Outdoors",
+  "Jewelery",
+  "Movies",
+  "Industrial",
+  "Music",
+  "Baby",
+  "Beauty",
+  "Games",
+  "Garden",
+  "Home",
+  "Electronics",
+  "Books",
+  "Clothing",
+];
 
 const schema = yup
   .object({
-    first_name: yup.string().required("Please write your first name"),
-    last_name: yup.string().required("Please write your last name"),
-    gender: yup
+    product_name: yup.string().required("Please write the name of the product"),
+    description: yup
+      .string()
+      .required("Please write a description for the product"),
+    price: yup.number().required("Please write the price of the product"),
+    category: yup
       .mixed()
-      .oneOf(["M", "F", "O"], "Please select a gender")
+      .oneOf(categories, "Please select a category")
       .defined(),
-    email: yup
-      .string()
-      .email("Invalid email")
-      .required("Please write your email"),
-    password: yup
-      .string()
-      .required("Please write your password")
-      .min(8, "Password is too short - should be 8 chars minimum.")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%.^&*])/,
-        "Password must contain at least 8 characters, one number, one uppercase letter, one lowercase letter amd one special character"
-      ),
-    role: yup.mixed().oneOf(["ADMIN", "CUSTOMER"]).defined(),
+    brand: yup.string().required("Please write the brand name"),
+    image: yup.string().required("Please add an image source"),
   })
   .required();
 
-const Signup = () => {
+const AddProduct = () => {
   const {
     register,
     handleSubmit,
@@ -49,27 +66,22 @@ const Signup = () => {
     resolver: yupResolver(schema),
   });
 
-  const { loginFunction, isAuth } = useAuthContext();
+  const { userData, isAuth } = useAuthContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuth) {
+    if (!isAuth || userData?.role !== "ADMIN") {
       navigate("/");
     }
-  }, [isAuth]);
+  }, [isAuth, userData]);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (formData) => {
     try {
-      const { status } = await registerUser(data);
-      if (status === 201) {
-        console.log("User created successfully");
-        const dataForLogin = {
-          email: data.email,
-          password: data.password,
-        };
-        const responseToken = await loginUser(dataForLogin);
-        if (responseToken.status === 200) {
-          await loginFunction(responseToken.data.token);
+      const token = localStorage.getItem("token");
+      if (token) {
+        const { data, status } = await addNewItem(formData, token);
+        console.log(status);
+        if (status === 200) {
           navigate("/");
         }
       }
@@ -98,7 +110,7 @@ const Signup = () => {
         }}
       >
         <Typography variant="h4" sx={{ mb: "2rem" }}>
-          Sign-up
+          Add a new product
         </Typography>
         <Box
           component="form"
@@ -115,89 +127,86 @@ const Signup = () => {
           <Box sx={{ width: "100%" }}>
             <TextField
               sx={{ width: "100%" }}
-              label="First name"
+              label="Product name"
               type="text"
               variant="outlined"
-              {...register("first_name")}
+              {...register("product_name")}
             />
             <Typography sx={{ color: "red" }}>
-              {errors.first_name?.message}
+              {errors.product_name?.message}
             </Typography>
           </Box>
 
           <Box sx={{ width: "100%" }}>
             <TextField
               sx={{ width: "100%" }}
-              label="Last name"
+              label="Description"
               type="text"
               variant="outlined"
-              {...register("last_name")}
+              {...register("description")}
             />
             <Typography sx={{ color: "red" }}>
-              {errors.last_name?.message}
+              {errors.description?.message}
+            </Typography>
+          </Box>
+
+          <Box sx={{ width: "100%" }}>
+            <TextField
+              sx={{ width: "100%" }}
+              label="Price"
+              type="text"
+              variant="outlined"
+              {...register("price")}
+            />
+            <Typography sx={{ color: "red" }}>
+              {errors.price?.message}
             </Typography>
           </Box>
 
           <Box sx={{ width: "100%" }}>
             <FormControl sx={{ width: "100%" }}>
-              <InputLabel id="gender-label">Gender</InputLabel>
+              <InputLabel id="category-label">Category</InputLabel>
               <Select
-                labelId="gender-label"
-                label="Gender"
+                labelId="category-label"
+                label="Category"
                 defaultValue=""
-                {...register("gender")}
+                {...register("category")}
               >
-                <MenuItem value={"M"}>Male</MenuItem>
-                <MenuItem value={"F"}>Female</MenuItem>
-                <MenuItem value={"O"}>Others</MenuItem>
+                {categories.map((cat) => (
+                  <MenuItem key={cat} value={cat}>
+                    {cat}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             <Typography sx={{ color: "red" }}>
-              {errors.gender?.message}
+              {errors.category?.message}
             </Typography>
           </Box>
 
           <Box sx={{ width: "100%" }}>
             <TextField
               sx={{ width: "100%" }}
-              label="Email"
+              label="Brand"
               type="text"
               variant="outlined"
-              {...register("email")}
+              {...register("brand")}
             />
             <Typography sx={{ color: "red" }}>
-              {errors.email?.message}
+              {errors.brand?.message}
             </Typography>
           </Box>
 
           <Box sx={{ width: "100%" }}>
             <TextField
               sx={{ width: "100%" }}
-              label="Password"
-              type="password"
+              label="Image source"
+              type="text"
               variant="outlined"
-              {...register("password")}
+              {...register("image")}
             />
             <Typography sx={{ color: "red" }}>
-              {errors.password?.message}
-            </Typography>
-          </Box>
-
-          <Box sx={{ width: "100%" }}>
-            <FormControl sx={{ width: "100%" }}>
-              <InputLabel id="role-label">Role</InputLabel>
-              <Select
-                labelId="role-label"
-                label="Role"
-                defaultValue=""
-                {...register("role")}
-              >
-                <MenuItem value={"CUSTOMER"}>CUSTOMER</MenuItem>
-                <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
-              </Select>
-            </FormControl>
-            <Typography sx={{ color: "red" }}>
-              {errors.role?.message}
+              {errors.image?.message}
             </Typography>
           </Box>
 
@@ -210,4 +219,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default AddProduct;

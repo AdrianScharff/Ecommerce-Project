@@ -1,4 +1,4 @@
-import { Route, Routes, /* Navigate */ } from "react-router-dom";
+import { Route, Routes /* Navigate */ } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import Home from "../pages/Home";
 import ProductDetail from "../pages/ProductDetail";
@@ -10,6 +10,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 // import useAuthContext from "@/hooks/useAuthContext";
 import Secret from "../pages/Secret";
+import AddProduct from "../pages/AddProduct";
 
 const RoutesIndex = () => {
   // const { isAuth } = useAuthContext();
@@ -24,6 +25,7 @@ const RoutesIndex = () => {
         <Route path="secret" element={<Secret />} />
         <Route path="*" element={<Error404 />} />
         <Route path="product-by-search/:text" element={<ItemsBySearch />} />
+        <Route path="add-product" element={<AddProduct />} />
         <Route
           path="login"
           // element={!isAuth ? <Login /> : <Navigate to="/" />}

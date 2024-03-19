@@ -6,7 +6,6 @@ import {
   Typography,
   Menu,
   Container,
-  // Avatar,
   Button,
   Tooltip,
   MenuItem,
@@ -339,6 +338,7 @@ const Header = () => {
                     <MenuItem
                       onClick={() => {
                         handleCloseUserMenu();
+                        navigate("/add-product");
                       }}
                     >
                       <Typography textAlign="center">Add a product</Typography>
