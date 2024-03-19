@@ -10,6 +10,7 @@ import {
   Tooltip,
   MenuItem,
   TextField,
+  InputBase,
 } from "@mui/material/";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
@@ -17,6 +18,9 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import ecommerceLogo from "../../assets/ecommerce-logo.png";
 import { useForm } from "react-hook-form";
 import useAuthContext from "@/hooks/useAuthContext";
+import SearchIcon from "@mui/icons-material/Search";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const pages = ["Home", "About", "Contact"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -70,199 +74,101 @@ const Header = () => {
   return (
     <div>
       <AppBar position="fixed">
-        <Container maxWidth="xl">
-          <Toolbar disableGutters sx={{ py: { xs: "0.5rem", md: 0 } }}>
-            {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              LOGO
-            </Typography> */}
-            {/* Logo for desktop */}
-            <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
-              <Link to="/">
-                <img
-                  src={ecommerceLogo}
-                  alt="ecommerce logo"
-                  style={{ height: "5rem" }}
+        <Box
+          sx={{
+            py: { xs: "0.5rem", md: "0.4rem" },
+            px: { xs: ".5rem", md: "1.5rem", xl: "3rem" },
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            bgcolor: "#043363",
+          }}
+        >
+          {/* Logo for desktop */}
+          <Box
+            sx={{
+              display: {
+                xs: "none",
+                md: "block",
+              },
+              // bgcolor: "#053262",
+              // height: "8rem",
+              // width: "8rem",
+            }}
+          >
+            <Link to="/">
+              <img
+                src={ecommerceLogo}
+                alt="ecommerce logo"
+                style={{ height: "3.5rem", padding: 0 }}
+              />
+            </Link>
+            {/* <SearchIcon /> */}
+          </Box>
+          {/* Input field for desktop */}
+          <Box
+            sx={{
+              display: {
+                xs: "none",
+                md: "block",
+              },
+            }}
+          >
+            <form onSubmit={handleSubmit(onSubmitDesk)}>
+              <Box sx={{ display: "flex" }}>
+                <TextField
+                  sx={{
+                    bgcolor: "white",
+                  }}
+                  label="Search product"
+                  variant="outlined"
+                  {...register("searchProductDesk")}
                 />
-              </Link>
-            </Box>
-            {/* Input field for desktop */}
-            <Box
+                <Button
+                  variant="contained"
+                  sx={{
+                    bgcolor: "#48a1ca",
+                    ":hover": { bgcolor: "#065299" },
+                  }}
+                  type="submit"
+                >
+                  Search
+                </Button>
+              </Box>
+            </form>
+          </Box>
+          {/* Menu icon for mobile */}
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              // size="large"
+              // aria-label="account of current user"
+              // aria-controls="menu-appbar"
+              // aria-haspopup="true"
+              sx={{ borderRadius: 0, padding: 0 }}
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon fontSize="large" />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              // anchorOrigin={{
+              //   vertical: "bottom",
+              //   horizontal: "left",
+              // }}
+              // keepMounted
+              // transformOrigin={{
+              //   vertical: "top",
+              //   horizontal: "left",
+              // }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
               sx={{
-                display: {
-                  xs: "none",
-                  md: "flex",
-                  bgcolor: "yellow",
-                },
-                justifyContent: "center",
-                flexGrow: 1,
+                display: { xs: "block", md: "none" },
               }}
             >
-              <form onSubmit={handleSubmit(onSubmitDesk)}>
-                <Box sx={{ display: "flex" }}>
-                  <TextField
-                    sx={{
-                      bgcolor: "white",
-                      width: "80%",
-                    }}
-                    label="Search product"
-                    variant="outlined"
-                    {...register("searchProductDesk")}
-                  />
-                  <Button
-                    variant="contained"
-                    sx={{
-                      bgcolor: "#48a1ca",
-                      ":hover": { bgcolor: "#065299" },
-                    }}
-                    type="submit"
-                  >
-                    Search
-                  </Button>
-                </Box>
-              </form>
-            </Box>
-            {/* ---- */}
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              >
-                {/* pages for mobile */}
-                {pages.map((page) => (
-                  <NavLink
-                    key={page}
-                    to={page !== "Home" ? `/${page.toLowerCase()}` : ""}
-                    style={{ textDecoration: "none" }}
-                    onClick={handleCloseNavMenu}
-                  >
-                    {({ isActive }) => (
-                      <MenuItem>
-                        <Button>
-                          <div className={isActive ? "active-contrast" : ""}>
-                            {page}
-                          </div>
-                        </Button>
-                      </MenuItem>
-                    )}
-                  </NavLink>
-                ))}
-              </Menu>
-            </Box>
-            {/* Logo for mobile */}
-            {/* <Box
-              sx={{
-                display: { xs: "flex", md: "none", bgcolor: "red" },
-                mr: 1,
-                flexGrow: 1,
-              }}
-            >
-              <Link to="/">
-                <img
-                  src={ecommerceLogo}
-                  alt="ecommerce logo"
-                  style={{ height: "4rem" }}
-                />
-              </Link>
-            </Box> */}
-            {/* Input field for mobile */}
-            <Box
-              sx={{
-                display: {
-                  xs: "flex",
-                  md: "none",
-                  bgcolor: "purple",
-                },
-                justifyContent: "center",
-                // width: "15rem",
-                flexGrow: 1,
-                px: "1.5rem",
-              }}
-            >
-              <form onSubmit={handleSubmit(onSubmitMobile)}>
-                <Box sx={{ display: "flex", mr: 2 }}>
-                  <TextField
-                    sx={{
-                      bgcolor: "white",
-                      // width: "80%",
-                      // mr: 2,
-                    }}
-                    label="Search product"
-                    variant="outlined"
-                    {...register("searchProductMobile")}
-                  />
-                  <Button variant="contained" type="submit" size="small">
-                    Search
-                  </Button>
-                </Box>
-              </form>
-            </Box>
-            {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
-            {/* <Typography
-              // variant="h5"
-              // noWrap
-              // component="a"
-              // href="#app-bar-with-responsive-menu"
-              sx={{
-                // mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              LOGO
-            </Typography> */}
-            {/* pages for desktop */}
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: { xs: "none", md: "flex" },
-                justifyContent: "end",
-                pr: 4,
-              }}
-            >
+              {/* pages for mobile */}
               {pages.map((page) => (
                 <NavLink
                   key={page}
@@ -271,42 +177,134 @@ const Header = () => {
                   onClick={handleCloseNavMenu}
                 >
                   {({ isActive }) => (
-                    <Button sx={{ my: 2, color: "white" }}>
-                      <div className={isActive ? "active" : ""}>{page}</div>
-                    </Button>
+                    <MenuItem>
+                      <Button sx={{ color: "#043363" }}>
+                        <div className={isActive ? "active-contrast" : ""}>
+                          {page}
+                        </div>
+                      </Button>
+                    </MenuItem>
                   )}
                 </NavLink>
               ))}
-            </Box>
-            {/* Box for user settings */}
+            </Menu>
+          </Box>
+
+          {/* Input field for mobile */}
+          <Box
+            sx={{
+              display: {
+                xs: "block",
+                md: "none",
+              },
+              // justifyContent: "center",
+              // width: "15rem",
+              // flexGrow: 1,
+              // px: "1.5rem",
+            }}
+          >
+            <form onSubmit={handleSubmit(onSubmitMobile)}>
+              <Box sx={{ display: "flex" }}>
+                <InputBase
+                  sx={{
+                    bgcolor: "white",
+                    // width: "80%",
+                    // mr: 2,
+                    height: "2.8rem",
+                    paddingX: "0.5rem",
+                    width: "8rem",
+                  }}
+                  placeholder="Search product"
+                  // label="Search product"
+                  // variant="outlined"
+                  {...register("searchProductMobile")}
+                />
+                {/* <Button
+                    variant="contained"
+                    type="submit"
+                    size="small"
+                    sx={{
+                      bgcolor: "#48a1ca",
+                    }}
+                  >
+                    <SearchIcon />
+                  </Button> */}
+                <IconButton
+                  // variant="contained"
+                  // size="small"
+                  type="submit"
+                  sx={{
+                    bgcolor: "#48a1ca",
+                    borderRadius: 0,
+                    paddingX: "12px",
+                  }}
+                >
+                  <SearchIcon sx={{ color: "white" }} />
+                </IconButton>
+              </Box>
+            </form>
+          </Box>
+          {/* pages for desktop */}
+          <Box
+            sx={{
+              // flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              gap: { xl: 8 },
+              // justifyContent: "end",
+              // pr: 4,
+            }}
+          >
+            {pages.map((page) => (
+              <NavLink
+                key={page}
+                to={page !== "Home" ? `/${page.toLowerCase()}` : ""}
+                style={{ textDecoration: "none" }}
+                onClick={handleCloseNavMenu}
+              >
+                {({ isActive }) => (
+                  <Button sx={{ color: "white" }}>
+                    <div className={isActive ? "active" : ""}>{page}</div>
+                  </Button>
+                )}
+              </NavLink>
+            ))}
+          </Box>
+          {/* Box for user settings */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: { xs: "3px", md: 2, xl: 3 },
+            }}
+          >
             {isAuth ? (
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Box>
+                <Box /* title="Open settings" */>
+                  <IconButton onClick={handleOpenUserMenu} sx={{ padding: 0 }}>
                     <Typography
                       sx={{
                         bgcolor: "transparent",
                         color: "#c7f6ff",
                         fontWeight: "bold",
                         py: "3px",
-                        px: "10px",
+                        px: "11px",
                         border: "2px solid #c7f6ff",
                         borderRadius: "50px",
                       }}
                     >
-                      {userData?.first_name || "no user"}
+                      {userData?.first_name || "No user"}
                     </Typography>
                   </IconButton>
-                </Tooltip>
+                </Box>
                 <Menu
                   sx={{ mt: "45px" }}
-                  id="menu-appbar"
+                  // id="menu-appbar"
                   anchorEl={anchorElUser}
                   anchorOrigin={{
                     vertical: "top",
                     horizontal: "right",
                   }}
-                  keepMounted
+                  // keepMounted
                   transformOrigin={{
                     vertical: "top",
                     horizontal: "right",
@@ -350,7 +348,9 @@ const Header = () => {
                       logoutFunction();
                       navigate("/login");
                     }}
+                    sx={{ gap: 1 }}
                   >
+                    <LogoutIcon />
                     <Typography textAlign="center">Logout</Typography>
                   </MenuItem>
                 </Menu>
@@ -377,11 +377,11 @@ const Header = () => {
                     vertical: "bottom",
                     horizontal: "left",
                   }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                  }}
+                  // keepMounted
+                  // transformOrigin={{
+                  //   vertical: "top",
+                  //   horizontal: "left",
+                  // }}
                   open={Boolean(anchorElAuth)}
                   onClose={handleCloseAuthMenu}
                 >
@@ -406,8 +406,11 @@ const Header = () => {
                 </Menu>
               </Box>
             )}
-          </Toolbar>
-        </Container>
+            <Box sx={{ borderRadius: 0, display: "flex" }}>
+              <ShoppingCartIcon sx={{ fontSize: "2.3rem" }} />
+            </Box>
+          </Box>
+        </Box>
       </AppBar>
     </div>
   );
