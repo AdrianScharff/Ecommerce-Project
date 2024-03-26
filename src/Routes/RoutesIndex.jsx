@@ -11,6 +11,8 @@ import Signup from "../pages/Signup";
 // import useAuthContext from "@/hooks/useAuthContext";
 import Secret from "../pages/Secret";
 import AddProduct from "../pages/AddProduct";
+import Test from "../pages/Test";
+import Checkout from "../pages/Checkout";
 
 const RoutesIndex = () => {
   // const { isAuth } = useAuthContext();
@@ -26,6 +28,8 @@ const RoutesIndex = () => {
         <Route path="*" element={<Error404 />} />
         <Route path="product-by-search/:text" element={<ItemsBySearch />} />
         <Route path="add-product" element={<AddProduct />} />
+        <Route path="test" element={<Test />} />
+        <Route path="checkout" element={<Checkout />} />
         <Route
           path="login"
           // element={!isAuth ? <Login /> : <Navigate to="/" />}

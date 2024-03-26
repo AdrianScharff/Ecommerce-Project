@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { getUserData } from "../services/userServices";
+import useCartContext from "../hooks/useCartContext";
 
 const AuthContext = createContext();
 
@@ -8,6 +9,8 @@ const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [userPayload, setUserPayload] = useState(null);
   const [userData, setUserData] = useState(null);
+
+  // const { setCartItems } = useCartContext();
 
   const loginFunction = async (token) => {
     try {
@@ -28,6 +31,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     setIsAuth(false);
     setUserPayload(null);
+    localStorage.removeItem("cartItems");
   };
 
   useEffect(() => {

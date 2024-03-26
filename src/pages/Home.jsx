@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { fetchAllItems } from "@/services/itemsServices";
-import { Container, Paper, Typography } from "@mui/material";
-import { Box } from "@mui/material";
-import { Directions } from "@mui/icons-material";
-import imageNA from "../assets/imageNA.png";
-import loadingImg from "@/assets/loadingImg.png";
-import ImageComponent from "@/components/ImageComponent/ImageComponent";
-import { Link } from "react-router-dom";
-// test
-import useAuthContext from "../hooks/useAuthContext";
-// ----
+// import { Container, Paper, Typography, IconButton } from "@mui/material";
+// import { Box } from "@mui/material";
+// import { Directions } from "@mui/icons-material";
+// import imageNA from "../assets/imageNA.png";
+// import loadingImg from "@/assets/loadingImg.png";
+// import ImageComponent from "@/components/ImageComponent/ImageComponent";
+// import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+// import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
+// import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+// import { Link } from "react-router-dom";
+import useCartContext from "../hooks/useCartContext";
+import ItemCardsContainer from "../components/ItemCardsContainer";
 
 const Home = () => {
   const [items, setItems] = useState([]);
 
-  // test
-  const { userData } = useAuthContext();
-  // ---
+  const { handleAddToCart, findItem, handleIncrease, handleDecrease } =
+    useCartContext();
 
   const getAllItems = async () => {
     try {
@@ -32,52 +33,9 @@ const Home = () => {
   }, []);
 
   return (
-    <Container
-      sx={{
-        // bgcolor: "red",
-        display: "grid",
-        gridTemplateColumns: { sm: "1fr", md: "repeat(4, 1fr)" },
-        gap: "1rem",
-        mt: { xs: "4.2rem", md: "5.3rem" },
-        py: "1.5rem",
-      }}
-      // test
-      onClick={() => {
-        console.log(userData);
-      }}
-      // -----
-    >
-      {items.map((item) => (
-        <Link
-          key={item.id}
-          to={`/product-detail/${item.id}`}
-          style={{ textDecoration: "none" }}
-        >
-          <Paper
-            sx={{
-              // height: { md: "20rem" },
-              border: "2px solid black",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              p: "1rem",
-              gap: 5,
-            }}
-          >
-            <ImageComponent
-              src={item.image || item.images}
-              alt={`image of ${item.product_name}`}
-              style={{ height: "8rem" }}
-              notFoundSrc={imageNA}
-            />
-
-            <Typography>{item.product_name}</Typography>
-            <Typography>{item.price}</Typography>
-            <Typography>{item.brand}</Typography>
-          </Paper>
-        </Link>
-      ))}
-    </Container>
+    <>
+      <ItemCardsContainer items={items} />
+    </>
   );
 };
 

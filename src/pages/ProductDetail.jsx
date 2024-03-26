@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, Typography } from "@mui/material";
+import { Button, Box, Typography, IconButton } from "@mui/material";
 import ImageComponent from "@/components/ImageComponent/ImageComponent";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { fetchSelectedItem } from "../services/itemsServices";
 import imageNA from "@/assets/imageNA.png";
 import useAuthContext from "../hooks/useAuthContext";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import useCartContext from "../hooks/useCartContext";
 
 const ProductDetail = () => {
   const [item, setItem] = useState({});
   const { id } = useParams();
   const { isAuth } = useAuthContext();
+  const { handleAddToCart, findItem, handleIncrease, handleDecrease } =
+    useCartContext();
 
   const getItem = async (id) => {
     try {
@@ -19,6 +26,13 @@ const ProductDetail = () => {
       console.error(error);
     }
   };
+
+  // const handleAddToCart = () => {
+  //   if (isAuth) {
+  //     localStorage.setItem("cartItems", JSON.stringify([...cartItems, item]));
+  //     setCartItems((prev) => [...prev, item]);
+  //   }
+  // };
 
   useEffect(() => {
     getItem(id);
@@ -46,10 +60,12 @@ const ProductDetail = () => {
         <ImageComponent
           src={item.image || item.images}
           alt={`image of ${item.product_name}`}
-          style={{ height: "18rem" }}
+          imgStyles={{ height: "18rem" }}
           notFoundSrc={imageNA}
         />
-        <Typography sx={{ fontWeight: "bold", fontSize: "2rem" }}>
+        <Typography
+          sx={{ fontWeight: "bold", fontSize: "2rem", color: "#053262" }}
+        >
           {item.product_name}
         </Typography>
         <Typography
@@ -69,13 +85,91 @@ const ProductDetail = () => {
             gap: "0.3rem",
           }}
         >
-          <Button
-            disabled={isAuth ? false : true}
-            size="large"
-            variant="contained"
+          <NavLink
+            style={!isAuth ? { cursor: "auto" } : {}}
+            {...(isAuth ? { to: "/checkout" } : {})}
           >
-            Buy now
-          </Button>
+            <Button
+              disabled={isAuth ? false : true}
+              size="large"
+              variant="contained"
+              sx={{
+                bgcolor: "#c7f6ff",
+                color: "#053262",
+                ":hover": { bgcolor: "#053262", color: "#c7f6ff" },
+                width: "11rem",
+              }}
+            >
+              {<span>Buy now</span>}
+              <ShoppingCartCheckoutIcon sx={{ fontSize: "2rem", pl: 1 }} />
+            </Button>
+          </NavLink>
+          {!findItem(item) ? (
+            <Button
+              disabled={isAuth ? false : true}
+              size="large"
+              variant="contained"
+              sx={{
+                bgcolor: "#c7f6ff",
+                color: "#053262",
+                ":hover": { bgcolor: "#053262", color: "#c7f6ff" },
+                width: "11rem",
+              }}
+              onClick={() => handleAddToCart(item)}
+            >
+              {<span>Add to cart</span>}
+              <AddShoppingCartIcon sx={{ fontSize: "2rem" }} />
+            </Button>
+          ) : (
+            <Box
+              // disabled={isAuth ? false : true}
+              size="large"
+              variant="contained"
+              sx={{
+                width: "11rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
+                gap: 1,
+                // p: "0.7rem 0 0.7rem 0.5rem",
+                // py: 1,
+                fontSize: "5rem",
+                mt: 2,
+                // bgcolor: "red",
+              }}
+            >
+              <AddShoppingCartIcon sx={{ fontSize: "2rem" }} />
+              <Box sx={{ display: "flex", gap: 1 }}>
+                <IconButton
+                  sx={{
+                    px: 1,
+                    bgcolor: "#c7f6ff",
+                    color: "#053262",
+                    ":hover": { bgcolor: "#053262", color: "#c7f6ff" },
+                    borderRadius: "5px",
+                  }}
+                  onClick={() => handleDecrease(item?.product_name)}
+                >
+                  <RemoveOutlinedIcon sx={{ fontSize: "1.5rem" }} />
+                </IconButton>
+                <Typography sx={{ color: "#053262", fontSize: "1.5rem" }}>
+                  {findItem(item)?.counter}
+                </Typography>
+                <IconButton
+                  sx={{
+                    px: 1,
+                    color: "#053262",
+                    bgcolor: "#c7f6ff",
+                    ":hover": { bgcolor: "#053262", color: "#c7f6ff" },
+                    borderRadius: "5px",
+                  }}
+                  onClick={() => handleIncrease(item?.product_name)}
+                >
+                  <AddOutlinedIcon sx={{ fontSize: "1.5rem" }} />
+                </IconButton>
+              </Box>
+            </Box>
+          )}
           {!isAuth && (
             <Box
               sx={{
@@ -94,7 +188,7 @@ const ProductDetail = () => {
           )}
         </Box>
         <Typography
-          sx={{ fontWeight: "bold", fontSize: "2rem", color: "blue" }}
+          sx={{ fontWeight: "bold", fontSize: "2rem", color: "#053262" }}
         >
           ${item.price}
         </Typography>

@@ -1,16 +1,26 @@
+import { Box } from "@mui/material";
 import React, { useState } from "react";
 
-const ImageComponent = ({ notFoundSrc, src, ...imageProps }) => {
+const ImageComponent = ({
+  notFoundSrc,
+  src,
+  boxStyles,
+  imgStyles,
+  ...imageProps
+}) => {
   const [imgSrc, setImgSrc] = useState(src);
 
   return (
-    <img
-      {...imageProps}
-      src={imgSrc || notFoundSrc}
-      onError={() => {
-        setImgSrc(notFoundSrc);
-      }}
-    />
+    <Box sx={{...boxStyles }}>
+      <img
+        {...imageProps}
+        src={imgSrc || notFoundSrc}
+        onError={() => {
+          setImgSrc(notFoundSrc);
+        }}
+        style={{...imgStyles }}
+      />
+    </Box>
   );
 };
 

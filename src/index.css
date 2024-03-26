@@ -5,7 +5,6 @@
 }
 
 .active {
-  /* color: #c7f6ff; */
   color: #c7f6ff;
   text-decoration: underline;
   text-underline-offset: 0.4rem;
@@ -15,8 +14,13 @@
   color: #9494ac;
   text-decoration: underline;
   text-underline-offset: 0.4rem;
+  /* height: max-content;
+  width: ; */
+  /* max-width: ;
+  max-height: ; */
 }
 
 .test {
   color: #1cccef;
+  /* cursor:  ; */
 }

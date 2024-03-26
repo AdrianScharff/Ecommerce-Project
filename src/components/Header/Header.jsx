@@ -21,6 +21,10 @@ import useAuthContext from "@/hooks/useAuthContext";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LogoutIcon from "@mui/icons-material/Logout";
+// import CartSideBar from "../cartSideBar/cartSidebar";
+// import CartSideBar from "../cart/cartSideBar/cartSidebar";
+import CartSideBar from "../cart/cartSideBar/cartSidebar";
+import useCartContext from "../../hooks/useCartContext";
 
 const pages = ["Home", "About", "Contact"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -70,6 +74,7 @@ const Header = () => {
   };
 
   const { isAuth, logoutFunction, userData } = useAuthContext();
+  const { setCartItems } = useCartContext();
 
   return (
     <div>
@@ -81,7 +86,7 @@ const Header = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            bgcolor: "#043363",
+            bgcolor: "#053262",
           }}
         >
           {/* Logo for desktop */}
@@ -127,12 +132,13 @@ const Header = () => {
                 <Button
                   variant="contained"
                   sx={{
-                    bgcolor: "#48a1ca",
-                    ":hover": { bgcolor: "#065299" },
+                    bgcolor: "#c7f6ff",
+                    ":hover": { bgcolor: "#9AE3F1" },
+                    color: "#053262",
                   }}
                   type="submit"
                 >
-                  Search
+                  <SearchIcon sx={{ fontSize: "1.7rem" }} />
                 </Button>
               </Box>
             </form>
@@ -234,12 +240,14 @@ const Header = () => {
                   // size="small"
                   type="submit"
                   sx={{
-                    bgcolor: "#48a1ca",
+                    bgcolor: "#c7f6ff",
+                    ":hover": { bgcolor: "#9AE3F1" },
+                    color: "#053262",
                     borderRadius: 0,
                     paddingX: "12px",
                   }}
                 >
-                  <SearchIcon sx={{ color: "white" }} />
+                  <SearchIcon />
                 </IconButton>
               </Box>
             </form>
@@ -347,6 +355,7 @@ const Header = () => {
                       handleCloseUserMenu();
                       logoutFunction();
                       navigate("/login");
+                      setCartItems([]);
                     }}
                     sx={{ gap: 1 }}
                   >
@@ -406,9 +415,7 @@ const Header = () => {
                 </Menu>
               </Box>
             )}
-            <Box sx={{ borderRadius: 0, display: "flex" }}>
-              <ShoppingCartIcon sx={{ fontSize: "2.3rem" }} />
-            </Box>
+            <CartSideBar />
           </Box>
         </Box>
       </AppBar>
