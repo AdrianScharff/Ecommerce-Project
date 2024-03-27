@@ -5,12 +5,11 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-// import CartItem from "@/components/cart/CartItem";
 import CartItem from "../CartItem";
 import CartIcon from "../CartIcon";
-// import CartIcon from "@/components/cart/CartIcon";
 import useCartContext from "../../../hooks/useCartContext";
 import useAuthContext from "../../../hooks/useAuthContext";
+import { NavLink } from "react-router-dom";
 
 export default function CartSideBar({ total }) {
   const [sidebar, setSidebar] = useState({});
@@ -31,29 +30,33 @@ export default function CartSideBar({ total }) {
     <Box
       sx={{
         position: "relative",
-        px: 3,
+        px: { xs: 1, md: 3 },
       }}
       onKeyDown={toggleSidebar(anchor, false)}
     >
       <Box>
-        <Box sx={{ mt: "2.5rem", mb: "2rem" }}>
+        {/* Box for "Cart" title */}
+        <Box sx={{ mt: "2rem", mb: { xs: "1rem", md: "2rem" } }}>
           <Typography sx={{ fontSize: "2rem", fontWeight: "bold" }}>
             Cart
           </Typography>
         </Box>
 
+        {/* Box for cart items */}
         <Box
           id="items-container"
           sx={{
+            height: { xs: "60vh", md: "61vh" },
+            width: { xs: "19rem", md: "40rem" },
             display: "flex",
             flexDirection: "column",
-            gap: 3,
-            height: { xs: "60vh", md: "61vh" },
+            gap: 2,
             overflowY: "scroll",
+            pr: { xs: "1rem", md: "2rem" },
           }}
         >
           {isAuth &&
-            cartItems.map((item) => (
+            cartItems.items?.map((item) => (
               <CartItem
                 key={item.product_name}
                 src={item.image || item.images}
@@ -62,21 +65,10 @@ export default function CartSideBar({ total }) {
                 price={item.price}
               />
             ))}
-          {/* <CartItem
-            src="https://i.pinimg.com/originals/eb/83/be/eb83be580847bcdc4c8f403c8085d3c8.jpg"
-            name="Awesome Granite Bacon"
-            counter={3}
-            price={962}
-          />
-          <CartItem
-            src="https://i.pinimg.com/originals/ee/f3/f4/eef3f4858339074c0bba500abfbf6850.jpg"
-            name="Unbranded Steel Fish"
-            counter={6}
-            price={643}
-          /> */}
         </Box>
 
         <Divider />
+        {/* Box for total sum and confirm button */}
         <Box
           sx={{
             display: "flex",
@@ -106,24 +98,31 @@ export default function CartSideBar({ total }) {
                 fontWeight: "bold",
               }}
             >
-              ${total} usd
+              ${cartItems.totalSum} usd
             </Typography>
           </Box>
-          {/* items.length > 0 && */}
-          <Button
-            variant="contained"
-            size="large"
-            sx={{
-              bgcolor: "#053262",
-              ":hover": { bgcolor: "#00FF84" },
-              color: "white",
-              width: "100%",
-              fontSize: "1.2rem",
-            }}
+          <NavLink
+            style={!cartItems.items?.length > 0 ? { cursor: "auto" } : {}}
+            {...(cartItems.items?.length > 0 ? { to: "/checkout" } : {})}
+            onClick={
+              cartItems.items?.length > 0 ? toggleSidebar(anchor, false) : null
+            }
           >
-            {/* isAuth ? Confirm order : Login to confirm order */}
-            Confirm order
-          </Button>
+            <Button
+              disabled={cartItems.items?.length > 0 ? false : true}
+              variant="contained"
+              size="large"
+              sx={{
+                bgcolor: "#053262",
+                ":hover": { bgcolor: "#00FF84" },
+                color: "white",
+                width: "100%",
+                fontSize: "1.2rem",
+              }}
+            >
+              Confirm order
+            </Button>
+          </NavLink>
         </Box>
       </Box>
 

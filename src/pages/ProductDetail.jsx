@@ -118,7 +118,7 @@ const ProductDetail = () => {
               onClick={() => handleAddToCart(item)}
             >
               {<span>Add to cart</span>}
-              <AddShoppingCartIcon sx={{ fontSize: "2rem" }} />
+              <AddShoppingCartIcon sx={{ fontSize: "2rem", pl: 1 }} />
             </Button>
           ) : (
             <Box

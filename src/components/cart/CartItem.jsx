@@ -11,37 +11,58 @@ const CartItem = ({ src, name, counter, price }) => {
   const { deleteItem, handleIncrease, handleDecrease } = useCartContext();
 
   return (
-    <Box>
+    <Box
+      sx={{
+        // bgcolor: "navy",
+        height: { xs: "7rem", md: "8rem" },
+      }}
+    >
+      {/* Box for all one item content without the divider */}
       <Box
         id="one-item-container"
         sx={{
-          display: "flex",
+          display: "grid",
+          gridTemplateColumns:
+            "calc(29% - 0.225rem) calc(44% - 0.225rem) calc(19% - 0.225rem) calc(8% - 0.225rem)",
           alignItems: "center",
-          gap: { xs: 1, md: 4 },
+          // gap: { xs: 1, md: 4 },
+          gap: "0.3rem",
           pb: 1,
         }}
       >
         <ImageComponent
           src={src}
           notFoundSrc={imageNA}
-          boxStyles={{ height: { xs: "5rem", md: "8rem" } }}
-          imgStyles={{ height: "100%" }}
+          boxStyles={{
+            // bgcolor: "blue",
+            height: { xs: "6rem", md: "7rem" },
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          imgStyles={{
+            maxHeight: "100%",
+            maxWidth: "100%",
+          }}
         />
-
+        {/* Box for title and counter */}
         <Box
           id="name-and-counter"
           sx={{
+            // bgcolor: "pink",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
+            alignItems: "center",
             gap: "0.2rem",
-            width: { xs: "7rem", md: "15rem" },
           }}
         >
-          <Typography sx={{ fontSize: { xs: "1rem", md: "1.5rem" } }}>
+          <Typography
+            sx={{ fontSize: { xs: "1rem", md: "1.5rem" }, textAlign: "center" }}
+          >
             {name}
           </Typography>
-          {/* Box for cart icon */}
+          {/* Box for counter */}
           <Box
             id="counter"
             sx={{
@@ -70,11 +91,25 @@ const CartItem = ({ src, name, counter, price }) => {
           </Box>
         </Box>
 
-        <Typography sx={{ fontSize: "1.6rem", fontWeight: "bold" }}>
+        <Typography
+          sx={{
+            // bgcolor: "skyblue",
+            fontSize: { xs: "1.2rem", md: "1.6rem" },
+            fontWeight: "bold",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           ${price}
         </Typography>
 
-        <IconButton sx={{ padding: 0 }} onClick={() => deleteItem(name)}>
+        <IconButton
+          sx={{
+            // bgcolor: "yellow",
+            padding: 0,
+          }}
+          onClick={() => deleteItem(name)}
+        >
           <DeleteIcon />
         </IconButton>
       </Box>

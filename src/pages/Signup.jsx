@@ -60,7 +60,7 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     try {
-      const { status } = await registerUser({...data, cartItems: []});
+      const { status } = await registerUser(data);
       if (status === 201) {
         console.log("User created successfully");
         const dataForLogin = {

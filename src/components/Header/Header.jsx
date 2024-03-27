@@ -355,7 +355,7 @@ const Header = () => {
                       handleCloseUserMenu();
                       logoutFunction();
                       navigate("/login");
-                      setCartItems([]);
+                      setCartItems({items:[], totalSum:null});
                     }}
                     sx={{ gap: 1 }}
                   >

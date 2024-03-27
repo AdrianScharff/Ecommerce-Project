@@ -1,7 +1,7 @@
 import { Box, Container, IconButton, Paper, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import useCartContext from "../hooks/useCartContext";
+import useCartContext from "../../hooks/useCartContext";
 import ImageComponent from "@/components/ImageComponent/ImageComponent";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
@@ -90,6 +90,7 @@ const ItemCardsContainer = ({ items }) => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                height: "100%",
                 // mb: 1,
               }}
               imgStyles={{

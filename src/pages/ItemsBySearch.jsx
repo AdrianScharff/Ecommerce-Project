@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchSearchedItems } from "../services/itemsServices";
-// import { Box, Container, IconButton, Paper, Typography } from "@mui/material";
-// import { Link } from "react-router-dom";
-// import ImageComponent from "../components/ImageComponent/ImageComponent";
-// import imageNA from "@/assets/imageNA.png";
-import useCartContext from "../hooks/useCartContext";
-// import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-// import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
-// import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import ItemCardsContainer from "../components/ItemCardsContainer";
+import ItemCardsContainer from "../components/items/ItemCardsContainer";
 
 const ItemsBySearch = () => {
   const [searchedItems, setSearchedItems] = useState([]);

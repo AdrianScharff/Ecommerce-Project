@@ -16,12 +16,12 @@ const CartIcon = ({ toggle }) => {
         padding: 0,
       }}
     >
-      <ShoppingCartIcon sx={{ fontSize: "2.3rem", color: "white" }} />
+      <ShoppingCartIcon sx={{ fontSize: "2.3rem", color: "white", mt: "0.6rem" }} />
       <Box
         sx={{
           position: "absolute",
           bgcolor: "#00FF84",
-          top: "-0.7rem",
+          top: "0.02rem",
           right: "0.4rem",
           borderRadius: "50px",
           px: "0.4rem",
@@ -34,7 +34,7 @@ const CartIcon = ({ toggle }) => {
             fontSize: "15px",
           }}
         >
-          {cartItems?.length}
+          {cartItems.items?.length || 0}
         </Typography>
       </Box>
     </IconButton>
