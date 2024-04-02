@@ -1,5 +1,5 @@
 import axios from 'axios'
-const BASE_URL = 'http://localhost:3000/'
+const BASE_URL = 'https://ecommerce-api-json-server-jwt-dev-f.onrender.com/'
 
 const registerUser = async (data) => {
     try {
