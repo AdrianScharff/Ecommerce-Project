@@ -11,7 +11,7 @@ import useCartContext from "../../../hooks/useCartContext";
 import useAuthContext from "../../../hooks/useAuthContext";
 import { NavLink } from "react-router-dom";
 
-export default function CartSideBar({ total }) {
+export default function CartSideBar() {
   const [sidebar, setSidebar] = useState({});
   const { cartItems } = useCartContext();
   const { isAuth } = useAuthContext();
@@ -56,7 +56,7 @@ export default function CartSideBar({ total }) {
           }}
         >
           {isAuth &&
-            cartItems.items?.map((item) => (
+            cartItems.items.map((item) => (
               <CartItem
                 key={item.product_name}
                 src={item.image || item.images}

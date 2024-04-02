@@ -1,16 +1,14 @@
-import { Box, Container, IconButton, Paper, Typography } from "@mui/material";
-import React from "react";
+import { Box, Container, Paper, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import useCartContext from "../../hooks/useCartContext";
 import ImageComponent from "@/components/ImageComponent/ImageComponent";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import ImageNA from "@/assets/imageNA.png";
+import CardCartIcon from "./CardCartIcon";
 
 const ItemCardsContainer = ({ items }) => {
-  const { handleAddToCart, findItem, handleIncrease, handleDecrease } =
-    useCartContext();
+  const { findItem, handleIncrease, handleDecrease } = useCartContext();
 
   return (
     <Container
@@ -43,19 +41,7 @@ const ItemCardsContainer = ({ items }) => {
             {/* Box for cart icon and add / remove */}
             <Box sx={{ position: "absolute", top: "0.5rem", right: "0.5rem" }}>
               {!findItem(item) ? (
-                <IconButton
-                  sx={{
-                    bgcolor: "#c7f6ff",
-                    color: "#053262",
-                    ":hover": { bgcolor: "#053262", color: "#c7f6ff" },
-                  }}
-                  onClick={(e) => {
-                    handleAddToCart(item);
-                    e.preventDefault();
-                  }}
-                >
-                  <ShoppingCartOutlinedIcon />
-                </IconButton>
+                <CardCartIcon item={item} />
               ) : (
                 <Box
                   sx={{
