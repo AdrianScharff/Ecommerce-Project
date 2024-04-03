@@ -9,7 +9,11 @@ const About = () => {
   return (
     <>
       {isAuth ? (
-        <Box sx={{ mt: { xs: "4.2rem", md: "5.3rem" } }}>About</Box>
+        <Box sx={{ mt: { xs: "4.2rem", md: "5.3rem" } }}>
+          <Typography sx={{ fontSize: "5rem", textAlign: "center" }}>
+            About
+          </Typography>
+        </Box>
       ) : (
         <Box
           sx={{

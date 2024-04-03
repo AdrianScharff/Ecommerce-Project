@@ -9,7 +9,11 @@ const Contact = () => {
   return (
     <>
       {isAuth ? (
-        <Box sx={{ mt: { xs: "4.2rem", md: "5.3rem" } }}>Contact</Box>
+        <Box sx={{ mt: { xs: "4.2rem", md: "5.3rem" } }}>
+          <Typography sx={{ fontSize: "5rem", textAlign: "center" }}>
+            Contact
+          </Typography>
+        </Box>
       ) : (
         <Box
           sx={{

@@ -20,7 +20,7 @@ const ItemCardsContainer = ({ items }) => {
         py: "1.5rem",
       }}
     >
-      {items.map((item) => (
+      {items?.map((item) => (
         <Link
           key={item.id}
           to={`/product-detail/${item.id}`}

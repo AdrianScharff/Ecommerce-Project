@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { fetchAllItems } from "@/services/itemsServices";
-import useCartContext from "../hooks/useCartContext";
 import ItemCardsContainer from "../components/items/ItemCardsContainer";
+import BackdropLoader from "../components/Loader/BackdropLoader";
 
 const Home = () => {
-  const [items, setItems] = useState([]);
-
-  const { handleAddToCart, findItem, handleIncrease, handleDecrease } =
-    useCartContext();
+  const [items, setItems] = useState(null);
 
   const getAllItems = async () => {
     try {
@@ -24,6 +21,7 @@ const Home = () => {
 
   return (
     <>
+      {!items && <BackdropLoader />}
       <ItemCardsContainer items={items} />
     </>
   );
