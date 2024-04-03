@@ -9,17 +9,13 @@ const AuthProvider = ({ children }) => {
   const [userPayload, setUserPayload] = useState(null);
   const [userData, setUserData] = useState(null);
 
-  // const { setCartItems } = useCartContext();
-
   const loginFunction = async (token) => {
     try {
       setIsAuth(true);
       localStorage.setItem("token", token);
       const response = await getUserData(token);
-      // console.log(response.data);
       setUserData(response.data);
       const payload = jwtDecode(token);
-      // console.log(payload);
       setUserPayload(payload);
     } catch (error) {
       throw error;
