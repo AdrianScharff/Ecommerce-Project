@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Box,
@@ -15,6 +15,7 @@ import * as yup from "yup";
 import useAuthContext from "@/hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { addNewItem } from "../services/itemsServices";
+import BackdropLoader from "../components/Loaders/BackdropLoader";
 
 const categories = [
   "Kids",
@@ -68,6 +69,7 @@ const AddProduct = () => {
 
   const { userData, isAuth } = useAuthContext();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!isAuth || userData?.role !== "ADMIN") {
@@ -77,6 +79,7 @@ const AddProduct = () => {
 
   const onSubmit = async (formData) => {
     try {
+      setIsLoading(true);
       const token = localStorage.getItem("token");
       if (token) {
         const { data, status } = await addNewItem(formData, token);
@@ -87,6 +90,8 @@ const AddProduct = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,6 +107,7 @@ const AddProduct = () => {
         width: "100%",
       }}
     >
+      {isLoading && <BackdropLoader message={"Adding new item..."} />}
       <Box
         sx={{
           mt: { xs: "4rem", md: "5rem" },

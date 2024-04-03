@@ -2,7 +2,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box, Typography } from "@mui/material";
 
-export default function BackdropLoader() {
+export default function BackdropLoader({ message }) {
   return (
     <Backdrop
       sx={{ color: "#c7f6ff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -26,7 +26,7 @@ export default function BackdropLoader() {
             width: { xs: "60%", md: "100%" },
           }}
         >
-          <Typography>Fetching items...</Typography>
+          <Typography>{message}</Typography>
           <Typography sx={{ textAlign: "center" }}>
             Please note: In case of inactivity, this process may take 50 seconds
             or more.

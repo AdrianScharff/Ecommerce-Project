@@ -24,7 +24,7 @@ const ItemsBySearch = () => {
 
   return (
     <>
-      {!searchedItems && <BackdropLoader />}
+      {!searchedItems && <BackdropLoader message={"Fetching items..."} />}
       <ItemCardsContainer items={searchedItems} />;
     </>
   );

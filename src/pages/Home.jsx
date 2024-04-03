@@ -21,7 +21,7 @@ const Home = () => {
 
   return (
     <>
-      {!items && <BackdropLoader />}
+      {!items && <BackdropLoader message={"Fetching items..."} />}
       <ItemCardsContainer items={items} />
     </>
   );

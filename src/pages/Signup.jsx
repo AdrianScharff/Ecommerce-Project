@@ -15,7 +15,7 @@ import * as yup from "yup";
 import { registerUser, loginUser } from "@/services/userServices";
 import useAuthContext from "@/hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
-import LoaderSignup from "../components/Loaders/LoaderSignup";
+import BackdropLoader from "../components/Loaders/BackdropLoader";
 
 const schema = yup
   .object({
@@ -95,7 +95,7 @@ const Signup = () => {
         width: "100%",
       }}
     >
-      {isLoading && <LoaderSignup />}
+      {isLoading && <BackdropLoader message={"Signing up..."} />}
       <Box
         sx={{
           mt: { xs: "4rem", md: "5rem" },

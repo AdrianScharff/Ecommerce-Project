@@ -10,6 +10,7 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import useCartContext from "../hooks/useCartContext";
+import BackdropLoader from "../components/Loaders/BackdropLoader";
 
 const ProductDetail = () => {
   const [item, setItem] = useState({});
@@ -27,13 +28,6 @@ const ProductDetail = () => {
     }
   };
 
-  // const handleAddToCart = () => {
-  //   if (isAuth) {
-  //     localStorage.setItem("cartItems", JSON.stringify([...cartItems, item]));
-  //     setCartItems((prev) => [...prev, item]);
-  //   }
-  // };
-
   useEffect(() => {
     getItem(id);
   }, []);
@@ -47,6 +41,9 @@ const ProductDetail = () => {
         py: "3rem",
       }}
     >
+      {!item.product_name && (
+        <BackdropLoader message={"Getting item details..."} />
+      )}
       <Box
         sx={{
           width: { md: "50%" },
