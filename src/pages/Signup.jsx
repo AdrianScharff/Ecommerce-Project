@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Box,
@@ -15,6 +15,7 @@ import * as yup from "yup";
 import { registerUser, loginUser } from "@/services/userServices";
 import useAuthContext from "@/hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
+import LoaderSignup from "../components/Loaders/LoaderSignup";
 
 const schema = yup
   .object({
@@ -51,6 +52,7 @@ const Signup = () => {
 
   const { loginFunction, isAuth } = useAuthContext();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isAuth) {
@@ -60,6 +62,7 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     try {
+      setIsLoading(true);
       const { status } = await registerUser(data);
       if (status === 201) {
         console.log("User created successfully");
@@ -75,6 +78,8 @@ const Signup = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -90,6 +95,7 @@ const Signup = () => {
         width: "100%",
       }}
     >
+      {isLoading && <LoaderSignup />}
       <Box
         sx={{
           mt: { xs: "4rem", md: "5rem" },

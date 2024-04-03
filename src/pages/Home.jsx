@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchAllItems } from "@/services/itemsServices";
 import ItemCardsContainer from "../components/items/ItemCardsContainer";
-import BackdropLoader from "../components/Loader/BackdropLoader";
+import BackdropLoader from "../components/Loaders/BackdropLoader";
 
 const Home = () => {
   const [items, setItems] = useState(null);

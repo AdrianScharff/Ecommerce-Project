@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Box, Typography, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { loginUser } from "@/services/userServices";
 import useAuthContext from "@/hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
-// import { getUserData } from "../services/userServices";
+import LoaderLogin from "../components/Loaders/LoaderLogIn";
 
 const schema = yup
   .object({
@@ -29,6 +29,7 @@ const Login = () => {
 
   const { loginFunction, isAuth } = useAuthContext();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isAuth) {
@@ -38,6 +39,7 @@ const Login = () => {
 
   const onSubmit = async (formData) => {
     try {
+      setIsLoading(true);
       const { data, status } = await loginUser(formData);
       if (status === 200) {
         await loginFunction(data.token);
@@ -45,6 +47,8 @@ const Login = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -60,6 +64,7 @@ const Login = () => {
         width: "100%",
       }}
     >
+      {isLoading && <LoaderLogin />}
       <Box
         sx={{
           mt: { xs: "4rem", md: "5rem" },

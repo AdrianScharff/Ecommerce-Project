@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchSearchedItems } from "../services/itemsServices";
 import ItemCardsContainer from "../components/items/ItemCardsContainer";
-import BackdropLoader from "../components/Loader/BackdropLoader";
+import BackdropLoader from "../components/Loaders/BackdropLoader";
 
 const ItemsBySearch = () => {
   const [searchedItems, setSearchedItems] = useState(null);
