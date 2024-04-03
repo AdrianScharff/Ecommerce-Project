@@ -336,6 +336,7 @@ const Header = () => {
                   <MenuItem
                     onClick={() => {
                       handleCloseUserMenu();
+                      navigate("/profile");
                     }}
                   >
                     <Typography textAlign="center">Profile</Typography>
@@ -355,7 +356,7 @@ const Header = () => {
                       handleCloseUserMenu();
                       logoutFunction();
                       navigate("/login");
-                      setCartItems({items:[], totalSum:null});
+                      setCartItems({ items: [], totalSum: null });
                     }}
                     sx={{ gap: 1 }}
                   >

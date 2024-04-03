@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { getUserData } from "../services/userServices";
-import useCartContext from "../hooks/useCartContext";
 
 const AuthContext = createContext();
 

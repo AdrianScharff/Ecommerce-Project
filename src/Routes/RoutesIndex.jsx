@@ -13,6 +13,7 @@ import Secret from "../pages/Secret";
 import AddProduct from "../pages/AddProduct";
 import Test from "../pages/Test";
 import Checkout from "../pages/Checkout";
+import Profile from "../pages/Profile";
 
 const RoutesIndex = () => {
   // const { isAuth } = useAuthContext();
@@ -30,6 +31,7 @@ const RoutesIndex = () => {
         <Route path="add-product" element={<AddProduct />} />
         <Route path="test" element={<Test />} />
         <Route path="checkout" element={<Checkout />} />
+        <Route path="profile" element={<Profile />} />
         <Route
           path="login"
           // element={!isAuth ? <Login /> : <Navigate to="/" />}

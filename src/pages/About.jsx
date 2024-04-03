@@ -28,7 +28,7 @@ const About = () => {
               mt: "20rem",
             }}
           >
-            <Typography variant="h4">
+            <Typography variant="h4" sx={{ textAlign: "center" }}>
               Please log-in or sign-up to see this page
             </Typography>
             <Typography variant="h4">
